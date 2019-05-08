@@ -3,7 +3,7 @@ import csv
 import json
 
 
-def read_csv(name):
+def read_csv(name, test=False):
     with open(name, "r") as f:
         table = list(csv.reader(f))
         head = table[0][0].split("\t")
@@ -27,21 +27,32 @@ def read_csv(name):
             temp = temp.split("\t")
             if len(temp) == len(head):
                 mapping = {}
-                for index in range(len(temp) - 1):
-                    mapping[head[index]] = temp[index]
-                data_set.append(mapping)
-                labels.append(temp[-1])
+                if not test:
+                    for index in range(len(temp) - 3):
+                        mapping[head[index]] = temp[index]
+                    data_set.append(mapping)
+                    labels.append(temp[-1])
+                else:
+                    for index in range(1, len(temp)):
+                        mapping[head[index]] = temp[index]
+                    mapping["votes_up"] = 0
+                    mapping["votes_all"] = 0
+                    data_set.append(mapping)
         print(len(data_set))
         print(len(labels))
-        x_train, x_vali, y_train, y_vali = train_test_split(data_set, labels, test_size=0.1)
-        with open("x_train.json", "w") as f:
-            json.dump(x_train, f)
-        with open("x_vali.json", "w") as f:
-            json.dump(x_vali, f)
-        with open("y_train.json", "w") as f:
-            json.dump(y_train, f)
-        with open("y_vali.json", "w") as f:
-            json.dump(y_vali, f)
+        return data_set, labels
+
+
+def divide(data_set, labels):
+    x_train, x_vali, y_train, y_vali = train_test_split(data_set, labels, test_size=0.1)
+    with open("x_train.json", "w") as f:
+        json.dump(x_train, f)
+    with open("x_vali.json", "w") as f:
+        json.dump(x_vali, f)
+    with open("y_train.json", "w") as f:
+        json.dump(y_train, f)
+    with open("y_vali.json", "w") as f:
+        json.dump(y_vali, f)
 
 
 def load_data():
@@ -56,7 +67,11 @@ def load_data():
     return x_train, y_train, x_vali, y_vali
 
 
+def load_test():
+    data_set, labels = read_csv("test.csv", test=True)
+    return data_set
+
+
 if __name__ == "__main__":
-    read_csv("train.csv")
-
-
+    data_set, labels = read_csv("train.csv")
+    divide(data_set, labels)

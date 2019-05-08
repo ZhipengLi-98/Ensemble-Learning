@@ -1,14 +1,16 @@
 from sklearn import tree
 from sklearn.externals import joblib
-from sklearn.feature_extraction import DictVectorizer
 import os
 import numpy as np
+from sklearn.feature_extraction import DictVectorizer
+import json
 
 
-def dtree_bagging(train_data, train_y, test_data, test_y, id=""):
-    vec = DictVectorizer()
-    train_x = vec.fit_transform(train_data)
-    test_x = vec.transform(test_data)
+def dtree_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
+    dtree_bagging_vec = DictVectorizer()
+    train_x = dtree_bagging_vec.fit_transform(train_data)
+    vali_x = dtree_bagging_vec.transform(vali_data)
+    test_x = dtree_bagging_vec.transform(test_data)
 
     dtree = tree.DecisionTreeClassifier(class_weight="balanced")
     dtree.fit(train_x, train_y)
@@ -16,7 +18,10 @@ def dtree_bagging(train_data, train_y, test_data, test_y, id=""):
     if not os.path.exists("model/bagging"):
         os.mkdir("model/bagging")
     joblib.dump(dtree, "model/bagging/dtree" + str(id) + ".pkl")
-    print("DTree Bagging " + str(id) + " Test: ", dtree.score(test_x, test_y))
+    print("DTree Bagging " + str(id) + " Test: ", dtree.score(vali_x, vali_y))
+    result = list(dtree.predict(test_x))
+    with open("model/bagging/dtree_result_" + str(id) + ".json", "w") as f:
+        json.dump(result, f)
 
 
 def dtree_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_data, raw_y):
@@ -45,4 +50,7 @@ def dtree_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_dat
 
 def dtree_classify(data, mode, id):
     model = joblib.load("model/" + mode + "/dtree" + str(id) + ".pkl")
-    return model.predict(data)
+    dtree_bagging_vec = DictVectorizer()
+    test_x = dtree_bagging_vec.fit_transform(data)
+
+    return model.predict(np.array(data).reshape((1, 55165)))
