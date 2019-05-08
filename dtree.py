@@ -1,20 +1,25 @@
 from sklearn import tree
 from sklearn.externals import joblib
+from sklearn.feature_extraction import DictVectorizer
 import os
 import numpy as np
 
 
-def dtree_train_bagging(train_data, train_y, test_data, test_y, id=""):
+def dtree_bagging(train_data, train_y, test_data, test_y, id=""):
+    vec = DictVectorizer()
+    train_x = vec.fit_transform(train_data)
+    test_x = vec.transform(test_data)
+
     dtree = tree.DecisionTreeClassifier(class_weight="balanced")
-    dtree.fit(train_data, train_y)
+    dtree.fit(train_x, train_y)
 
     if not os.path.exists("model/bagging"):
         os.mkdir("model/bagging")
     joblib.dump(dtree, "model/bagging/dtree" + str(id) + ".pkl")
-    print("DTree Bagging " + str(id) + " Test: ", dtree.score(test_data, test_y))
+    print("DTree Bagging " + str(id) + " Test: ", dtree.score(test_x, test_y))
 
 
-def dtree_train_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_data, raw_y):
+def dtree_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_data, raw_y):
     dtree = tree.DecisionTreeClassifier(class_weight="balanced")
     dtree.fit(train_data, train_y)
 

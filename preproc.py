@@ -33,15 +33,27 @@ def read_csv(name):
                 labels.append(temp[-1])
         print(len(data_set))
         print(len(labels))
-        x_train, x_vali, y_train, y_valid = train_test_split(data_set, labels, test_size=0.1)
+        x_train, x_vali, y_train, y_vali = train_test_split(data_set, labels, test_size=0.1)
         with open("x_train.json", "w") as f:
             json.dump(x_train, f)
         with open("x_vali.json", "w") as f:
             json.dump(x_vali, f)
         with open("y_train.json", "w") as f:
             json.dump(y_train, f)
-        with open("y_valid.json", "w") as f:
-            json.dump(y_valid, f)
+        with open("y_vali.json", "w") as f:
+            json.dump(y_vali, f)
+
+
+def load_data():
+    with open("x_train.json", "r") as f:
+        x_train = json.load(f)
+    with open("x_vali.json", "r") as f:
+        x_vali = json.load(f)
+    with open("y_train.json", "r") as f:
+        y_train = json.load(f)
+    with open("y_vali.json", "r") as f:
+        y_vali = json.load(f)
+    return x_train, y_train, x_vali, y_vali
 
 
 if __name__ == "__main__":
