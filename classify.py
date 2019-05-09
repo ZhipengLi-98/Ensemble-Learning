@@ -1,15 +1,14 @@
 from utils import *
 import math
-import preproc
 import json
 
 
-def bagging():
+def bagging(method):
     ans = []
     label = {}
     temp = {}
     for j in range(bagging_times):
-        with open("model/bagging/dtree_result_" + str(j) +".json") as f:
+        with open("model/bagging/" + method + "_result_" + str(j) +".json") as f:
             result = list(json.load(f))
             for i in range(len(result)):
                 if i not in label.keys():
@@ -42,4 +41,4 @@ def write(result):
 
 
 if __name__ == "__main__":
-    write(bagging())
+    write(bagging("svm"))

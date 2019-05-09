@@ -19,6 +19,7 @@ def dtree_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
         os.mkdir("model/bagging")
     joblib.dump(dtree, "model/bagging/dtree" + str(id) + ".pkl")
     print("DTree Bagging " + str(id) + " Test: ", dtree.score(vali_x, vali_y))
+
     result = list(dtree.predict(test_x))
     with open("model/bagging/dtree_result_" + str(id) + ".json", "w") as f:
         json.dump(result, f)
