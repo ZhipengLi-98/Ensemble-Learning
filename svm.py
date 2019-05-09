@@ -1,4 +1,4 @@
-from sklearn.svm import LinearSVC
+from sklearn.svm import LinearSVC, SVC
 from sklearn.feature_extraction import DictVectorizer
 import os
 from sklearn.externals import joblib
@@ -11,6 +11,8 @@ def svm_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
     vali_x = svm_bagging_vec.transform(vali_data)
     test_x = svm_bagging_vec.transform(test_data)
 
+    # 速度慢 找个时间跑一下做一个对比
+    # svm = SVC(class_weight="balanced", verbose=True, gamma="auto")
     svm = LinearSVC(multi_class="ovr", class_weight="balanced", verbose=True)
     svm.fit(train_x, train_y)
 

@@ -25,11 +25,17 @@ def dtree_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
         json.dump(result, f)
 
 
-def dtree_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_data, raw_y):
-    dtree = tree.DecisionTreeClassifier(class_weight="balanced")
-    dtree.fit(train_data, train_y)
+def dtree_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weights, raw_data, raw_y):
+    dtree_ada_boost_vec = DictVectorizer()
+    train_x = dtree_ada_boost_vec.fit_transform(train_data)
+    raw_x = dtree_ada_boost_vec.transform(raw_data)
+    vali_x = dtree_ada_boost_vec.transform(vali_data)
+    test_x = dtree_ada_boost_vec.transform(test_data)
 
-    result = dtree.predict(raw_data)
+    dtree = tree.DecisionTreeClassifier(class_weight="balanced")
+    dtree.fit(train_x, train_y)
+
+    result = dtree.predict(raw_x)
     sigma = float(np.dot(np.array(result) != np.array(raw_y), weights))
     if not sigma > 0.5:
         beta = sigma / (1.0 - sigma)
@@ -46,12 +52,11 @@ def dtree_ada_boost(train_data, train_y, test_data, test_y, id, weights, raw_dat
         joblib.dump(dtree, "model/ada_boost/dtree" + str(id) + ".pkl")
         with open("model/ada_boost/beta" + str(id) + ".txt", "w") as f:
             f.write(str(beta))
+
+        print("DTree Ada_Boost " + str(id) + " Test: ", dtree.score(vali_x, vali_y))
+        result = list(dtree.predict(test_x))
+        with open("model/ada_boost/dtree_result_" + str(id) + ".json", "w") as f:
+            json.dump(result, f)
+
     return weights, sigma
 
-
-def dtree_classify(data, mode, id):
-    model = joblib.load("model/" + mode + "/dtree" + str(id) + ".pkl")
-    dtree_bagging_vec = DictVectorizer()
-    test_x = dtree_bagging_vec.fit_transform(data)
-
-    return model.predict(np.array(data).reshape((1, 55165)))

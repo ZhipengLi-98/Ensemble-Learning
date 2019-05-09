@@ -1,6 +1,7 @@
 from utils import *
 import math
 import json
+import os
 
 
 def bagging(method):
@@ -21,16 +22,30 @@ def bagging(method):
     return ans
 
 
-def ada_boost():
+def ada_boost(method):
     ans = []
-    test_set = []
+    temp = []
+    label = {}
     betas = {}
-    for data in test_set:
-        label = {0: 0, 1: 0}
-        for i in range(len(betas)):
-            result = classify()
-            label[result[0]] += math.log(1.0 / betas[i])
-        ans.append(max(label[0], label[1]))
+    dir = os.listdir("model/ada_boost")
+    for file in dir:
+        if file.split(".")[-1] == "txt":
+            id = file.split(".")[0][-1]
+            with open("model/ada_boost/" + file) as f:
+                betas[int(id)] = float(f.read())
+            with open("model/ada_boost/dtree_result_" + id + ".json") as f:
+                label[int(id)] = json.load(f)
+    ans = [0 for i in range(len(label[0]))]
+    temp = [0 for i in range(len(label[0]))]
+    for i in betas.keys():
+        beta = betas[i]
+        result = label[i]
+        for j in range(len(result)):
+            ans[j] += float(result[j]) * math.log(1.0 / beta)
+            temp[j] += math.log(1.0 / beta)
+    for i in range(len(ans)):
+        ans[i] = ans[i] / temp[i]
+    return ans
 
 
 def write(result):
@@ -41,4 +56,5 @@ def write(result):
 
 
 if __name__ == "__main__":
-    write(bagging("svm"))
+    # write(bagging("dtree"))
+    write(ada_boost("dtree"))
