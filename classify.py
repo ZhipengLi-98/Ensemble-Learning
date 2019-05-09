@@ -23,17 +23,15 @@ def bagging(method):
 
 
 def ada_boost(method):
-    ans = []
-    temp = []
     label = {}
     betas = {}
     dir = os.listdir("model/ada_boost")
     for file in dir:
         if file.split(".")[-1] == "txt":
             id = file.split(".")[0][-1]
-            with open("model/ada_boost/" + file) as f:
+            with open("model/ada_boost/" + method + "_beta" + id + ".txt") as f:
                 betas[int(id)] = float(f.read())
-            with open("model/ada_boost/dtree_result_" + id + ".json") as f:
+            with open("model/ada_boost/" + method + "_result_" + id + ".json") as f:
                 label[int(id)] = json.load(f)
     ans = [0 for i in range(len(label[0]))]
     temp = [0 for i in range(len(label[0]))]
@@ -56,5 +54,5 @@ def write(result):
 
 
 if __name__ == "__main__":
-    # write(bagging("dtree"))
-    write(ada_boost("dtree"))
+    write(bagging("svm"))
+    # write(ada_boost("svm"))
