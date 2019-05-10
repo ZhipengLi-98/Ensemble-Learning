@@ -4,9 +4,10 @@ import random
 import numpy as np
 from dtree import dtree_bagging, dtree_ada_boost
 from svm import svm_bagging, svm_ada_boost
+from knn import knn_bagging, knn_ada_boost
 
-bagging_map = {"dtree": dtree_bagging, "svm": svm_bagging}
-ada_boost_map = {"dtree": dtree_ada_boost, "svm": svm_ada_boost}
+bagging_map = {"dtree": dtree_bagging, "svm": svm_bagging, "knn": knn_bagging}
+ada_boost_map = {"dtree": dtree_ada_boost, "svm": svm_ada_boost, "knn": knn_ada_boost}
 
 
 def train_bagging(method):
@@ -41,5 +42,5 @@ def train_ada_boost(method):
 
 
 if __name__ == "__main__":
-    train_bagging("svm")
-    # train_ada_boost("dtree)
+    # train_bagging("knn")
+    train_ada_boost("knn")
