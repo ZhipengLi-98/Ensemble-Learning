@@ -45,6 +45,9 @@ def read_csv(name, test=False):
 
 def divide(data_set, labels):
     x_train, x_vali, y_train, y_vali = train_test_split(data_set, labels, test_size=0.1)
+    x_train += x_vali
+    y_train += y_vali
+    print(len(x_train))
     with open("x_train.json", "w") as f:
         json.dump(x_train, f)
     with open("x_vali.json", "w") as f:

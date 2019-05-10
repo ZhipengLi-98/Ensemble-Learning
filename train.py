@@ -64,6 +64,6 @@ def svm_train_ada():
 
 if __name__ == "__main__":
     # dtree_train_bagging()
-    # svm_train_bagging()
+    svm_train_bagging()
     # dtree_train_ada()
-    svm_train_ada()
+    # svm_train_ada()
