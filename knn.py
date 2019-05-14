@@ -50,7 +50,7 @@ def knn_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weights
         if not os.path.exists("model/ada_boost"):
             os.mkdir("model/ada_boost")
         joblib.dump(knn, "model/ada_boost/knn" + str(id) + ".pkl")
-        with open("model/ada_boost/beta" + str(id) + ".txt", "w") as f:
+        with open("model/ada_boost/knn_beta" + str(id) + ".txt", "w") as f:
             f.write(str(beta))
 
         print("KNN Ada_Boost " + str(id) + " Test: ", knn.score(vali_x, vali_y))

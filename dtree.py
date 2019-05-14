@@ -50,7 +50,7 @@ def dtree_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weigh
         if not os.path.exists("model/ada_boost"):
             os.mkdir("model/ada_boost")
         joblib.dump(dtree, "model/ada_boost/dtree" + str(id) + ".pkl")
-        with open("model/ada_boost/beta" + str(id) + ".txt", "w") as f:
+        with open("model/ada_boost/dtree_beta" + str(id) + ".txt", "w") as f:
             f.write(str(beta))
 
         print("DTree Ada_Boost " + str(id) + " Test: ", dtree.score(vali_x, vali_y))

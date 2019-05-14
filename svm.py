@@ -1,7 +1,6 @@
 from sklearn.svm import LinearSVC, SVC
 from sklearn.feature_extraction import DictVectorizer
 import os
-from sklearn.externals import joblib
 import json
 import numpy as np
 
@@ -19,7 +18,6 @@ def svm_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
 
     if not os.path.exists("model/bagging"):
         os.mkdir("model/bagging")
-    joblib.dump(svm, "model/bagging/svm" + str(id) + ".pkl")
     print("SVM Bagging " + str(id) + " Test: ", svm.score(vali_x, vali_y))
 
     result = list(svm.predict(test_x))
@@ -51,7 +49,6 @@ def svm_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weights
         weights = weights / np.sum(weights)
         if not os.path.exists("model/ada_boost"):
             os.mkdir("model/ada_boost")
-        joblib.dump(svm, "model/ada_boost/svm" + str(id) + ".pkl")
         with open("model/ada_boost/svm_beta" + str(id) + ".txt", "w") as f:
             f.write(str(beta))
 

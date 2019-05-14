@@ -13,7 +13,6 @@ def nb_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
     test_x = nb_bagging_vec.transform(test_data)
 
     # nb = BernoulliNB()
-    # nb = GaussianNB()
     nb = MultinomialNB()
     nb.fit(train_x, train_y)
 
@@ -34,9 +33,8 @@ def nb_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weights,
     vali_x = nb_ada_boost_vec.transform(vali_data)
     test_x = nb_ada_boost_vec.transform(test_data)
 
-    # nb = BernoulliNB()
-    # nb = GaussianNB()
-    nb = MultinomialNB()
+    nb = BernoulliNB()
+    # nb = MultinomialNB()
     nb.fit(train_x, train_y)
 
     result = nb.predict(raw_x)
@@ -54,7 +52,7 @@ def nb_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weights,
         if not os.path.exists("model/ada_boost"):
             os.mkdir("model/ada_boost")
         joblib.dump(nb, "model/ada_boost/nb" + str(id) + ".pkl")
-        with open("model/ada_boost/beta" + str(id) + ".txt", "w") as f:
+        with open("model/ada_boost/nb_beta" + str(id) + ".txt", "w") as f:
             f.write(str(beta))
 
         print("NB Ada_Boost " + str(id) + " Test: ", nb.score(vali_x, vali_y))
