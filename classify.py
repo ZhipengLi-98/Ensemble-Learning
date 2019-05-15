@@ -54,5 +54,5 @@ def write(result):
 
 
 if __name__ == "__main__":
-    # write(bagging("svm"))
-    write(ada_boost("svm"))
+    write(bagging("svm"))
+    # write(ada_boost("dtree"))

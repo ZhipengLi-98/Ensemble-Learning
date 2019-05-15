@@ -43,5 +43,5 @@ def train_ada_boost(method):
 
 
 if __name__ == "__main__":
-    # train_bagging("svm")
-    train_ada_boost("svm")
+    train_bagging("svm")
+    # train_ada_boost("dtree")

@@ -3,13 +3,16 @@ from sklearn.feature_extraction import DictVectorizer
 import os
 import json
 import numpy as np
+from tfidf import gettfidf
 
 
 def svm_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
-    svm_bagging_vec = DictVectorizer()
-    train_x = svm_bagging_vec.fit_transform(train_data)
-    vali_x = svm_bagging_vec.transform(vali_data)
-    test_x = svm_bagging_vec.transform(test_data)
+    # svm_bagging_vec = DictVectorizer()
+    # train_x = svm_bagging_vec.fit_transform(train_data)
+    # vali_x = svm_bagging_vec.transform(vali_data)
+    # test_x = svm_bagging_vec.transform(test_data)
+
+    train_x, vali_x, test_x = gettfidf(train_data, vali_data, test_data)
 
     # 速度慢 找个时间跑一下做一个对比
     # svm = SVC(class_weight="balanced", verbose=True, gamma="auto")

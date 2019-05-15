@@ -12,12 +12,11 @@ def dtree_bagging(train_data, train_y, vali_data, vali_y, test_data, id=""):
     vali_x = dtree_bagging_vec.transform(vali_data)
     test_x = dtree_bagging_vec.transform(test_data)
 
-    dtree = tree.DecisionTreeClassifier(class_weight="balanced")
+    dtree = tree.DecisionTreeClassifier(class_weight="balanced", max_depth=1000)
     dtree.fit(train_x, train_y)
 
     if not os.path.exists("model/bagging"):
         os.mkdir("model/bagging")
-    joblib.dump(dtree, "model/bagging/dtree" + str(id) + ".pkl")
     print("DTree Bagging " + str(id) + " Test: ", dtree.score(vali_x, vali_y))
 
     result = list(dtree.predict(test_x))
@@ -32,7 +31,7 @@ def dtree_ada_boost(train_data, train_y, vali_data, vali_y, test_data, id, weigh
     vali_x = dtree_ada_boost_vec.transform(vali_data)
     test_x = dtree_ada_boost_vec.transform(test_data)
 
-    dtree = tree.DecisionTreeClassifier(class_weight="balanced")
+    dtree = tree.DecisionTreeClassifier(class_weight="balanced", max_depth=500)
     dtree.fit(train_x, train_y)
 
     result = dtree.predict(raw_x)

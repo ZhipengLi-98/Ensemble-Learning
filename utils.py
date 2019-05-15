@@ -1,4 +1,4 @@
 # 可调整的参数?
-bagging_times = 10000
+bagging_times = 100
 
-ada_times = 2000
+ada_times = 50
