@@ -2,16 +2,7 @@ from preproc import *
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 
 
-def gettfidf(x_train, x_vali, x_test):
-    train_list = []
-    vali_list = []
-    test_list = []
-    for i in x_train:
-        train_list.append(i["reviewText"])
-    for i in x_vali:
-        vali_list.append(i["reviewText"])
-    for i in x_test:
-        test_list.append(i["reviewText"])
+def gettfidf(train_list, vali_list, test_list):
     text = train_list + test_list
 
     count = CountVectorizer()

@@ -70,11 +70,43 @@ def load_data():
     return x_train, y_train, x_vali, y_vali
 
 
+def extract_text():
+    x_train, y_train, x_vali, y_vali = load_data()
+    test_data = load_test()
+    train_list = []
+    vali_list = []
+    test_list = []
+    for i in x_train:
+        train_list.append(i["reviewText"])
+    for i in x_vali:
+        vali_list.append(i["reviewText"])
+    for i in test_data:
+        test_list.append(i["reviewText"])
+
+    with open("x_train_text.json", "w") as f:
+        json.dump(train_list, f)
+    with open("x_vali_text.json", "w") as f:
+        json.dump(vali_list, f)
+    with open("x_test_text.json", "w") as f:
+        json.dump(test_list, f)
+
+
+def load_text():
+    with open("x_train_text.json", "r") as f:
+        x_train = json.load(f)
+    with open("x_vali_text.json", "r") as f:
+        x_vali = json.load(f)
+    with open("x_test_text.json", "r") as f:
+        x_test = json.load(f)
+    return x_train, x_vali, x_test
+
+
 def load_test():
     data_set, labels = read_csv("test.csv", test=True)
     return data_set
 
 
 if __name__ == "__main__":
-    data_set, labels = read_csv("train.csv")
-    divide(data_set, labels)
+    extract_text()
+    # data_set, labels = read_csv("train.csv")
+    # divide(data_set, labels)
